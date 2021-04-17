@@ -72,7 +72,7 @@ d3.json(url).then(function(response) {
       return {
         opacity: 1,
         fillOpacity: 1,
-        fillColor: getColor(feature.properties.coordinates[2]),
+        fillColor: getColor(feature.geometry.coordinates[2]),
         color: "#000000",
         radius: getRadius(feature.properties.mag),
         stroke: true,
@@ -88,7 +88,7 @@ d3.json(url).then(function(response) {
         return "#ee9c00"
       } else if(depth > 30) {
         return "eecc00"
-      } else if(deptj > 10) {
+      } else if(depth > 10) {
         return "#d4ee00"
       } else {
         return "#98ee00"
@@ -105,39 +105,17 @@ d3.json(url).then(function(response) {
     // create geojson data for markers
     L.geoJson(response, {
       pointToLayer: function(feature, latlng) {
-        console.log(response);
+      //  console.log(feature);
         return L.circleMarker(latlng)
       },
       style: markerStyle,
-      onEachFeature: function
-    })
+      onEachFeature: function(feature, layer) {
+        layer.bindPopup(`Magnitude: ${feature.properties.mag}<br>Location: ${feature.properties.place}`)
+      }
+    }).addTo(quakeLayer)
 
+  // add quakeLayer to map
+  quakeLayer.addTo(myMap)
 
 
 });
-
-
-//   // array for markers
-
-//   // loop through json data to store coordinates for markers
-// //   for (let i = 0; i < response.length; i++) {
-// // //     console.log(response[i].features.geometry.coordinates[0]);
-// // //     console.log(response[i].features.properties.mag);
-// // //   };
-// // // });
-
-
-//   for (let i = 0; i < response.length; i++) {
-//     quakeMarkers.push(
-//       L.circle(response[i].features.geometry.coordinates, {
-//         stroke: false,
-//         fillOpacity: 0.75,
-//         color: "green",
-//         fillColor: "green",
-//         radius: (response[i].features.properties.mag)
-//       })
-//     );
-//   };
-// });
-
-
