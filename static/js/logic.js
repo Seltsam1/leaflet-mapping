@@ -142,5 +142,19 @@ d3.json(url).then(function(response) {
   // add legend to map
   legend.addTo(myMap)
 
+  // get data for tectonic plates
+  let plateUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+
+  d3.json(plateUrl).then(function(plateResponse) {
+    console.log(plateResponse)
+    L.geoJson(plateResponse, {
+      color: "#ff6500",
+      weight: 2
+    })
+  }).addTo(plateLayer);
+
+  // add platelayer to map
+  plateLayer.addTo(myMap);
+
 
 });
