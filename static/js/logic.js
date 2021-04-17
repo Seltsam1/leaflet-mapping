@@ -32,7 +32,7 @@ let outdoormap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x
 
 // Creating map object
 let myMap = L.map("map", {
-  center: [40.7608, -111.8910],
+  center: [40.52, -70],
   zoom: 3,
   layers: [satellitemap, lightmap, outdoormap, ]
 });
@@ -142,6 +142,7 @@ d3.json(url).then(function(response) {
   // add legend to map
   legend.addTo(myMap)
 
+
   // get data for tectonic plates
   let plateUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
 
@@ -150,11 +151,10 @@ d3.json(url).then(function(response) {
     L.geoJson(plateResponse, {
       color: "#ff6500",
       weight: 2
-    })
-  }).addTo(plateLayer);
-
-  // add platelayer to map
-  plateLayer.addTo(myMap);
-
+    }).addTo(plateLayer);
+    
+    // add platelayer to map
+    plateLayer.addTo(myMap);
+  })
 
 });
