@@ -1,6 +1,6 @@
 // Leaflet mapping
 
-// tile layer for map
+// tile layer for map (light theme)
 let lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
@@ -10,6 +10,7 @@ let lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
   accessToken: API_KEY
 });
 
+// tile layer for satellite theme
 let satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
@@ -19,6 +20,7 @@ let satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/
   accessToken: API_KEY
 });
 
+// tile layer for outdoor theme
 let outdoormap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
@@ -38,8 +40,25 @@ let myMap = L.map("map", {
 // Adding lightmap to map
 lightmap.addTo(myMap)
 
-// base layer for markers
+// Define base maps
+let baseMaps = {
+  Satellite: satellitemap,
+  Grayscale: lightmap,
+  Outdoors: outdoormap
+};
+
+// Base layer for markers
 let quakeLayer = new L.layerGroup();
+let plateLayer = new L.layerGroup();
+
+// Define marker overlay layers
+let overlays = {
+  "Tectonic Plates": plateLayer,
+  Earthquakes: quakeLayer
+};
+
+// User control for layers
+L.contol.layers(baseMaps, overlays).addTo(myMap);
 
 // API queries for data
 let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
@@ -48,8 +67,9 @@ let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.ge
 d3.json(url).then(function(response) {
     console.log(response)
 
+
+
   // array for markers
-  var quakeMarkers = [];
 
   // loop through json data to store coordinates for markers
 //   for (let i = 0; i < response.length; i++) {
