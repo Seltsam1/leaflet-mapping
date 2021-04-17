@@ -33,18 +33,18 @@ let outdoormap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x
 // Creating map object
 let myMap = L.map("map", {
   center: [40.7608, -111.8910],
-  zoom: 4,
-  layers: [outdoormap, satellitemap, lightmap]
+  zoom: 3,
+  layers: [satellitemap, lightmap, outdoormap, ]
 });
 
-// Adding lightmap to map
-lightmap.addTo(myMap)
+// // Adding lightmap to map
+// lightmap.addTo(myMap)
 
 // Define base maps
 let baseMaps = {
-  Satellite: satellitemap,
   Grayscale: lightmap,
-  Outdoors: outdoormap
+  Outdoors: outdoormap,
+  Satellite: satellitemap
 };
 
 // Base layer for markers
@@ -58,38 +58,38 @@ let overlays = {
 };
 
 // User control for layers
-L.contol.layers(baseMaps, overlays).addTo(myMap);
+L.control.layers(baseMaps, overlays).addTo(myMap)
 
-// API queries for data
-let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+// // API queries for data
+// let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-// get json data from url with d3
-d3.json(url).then(function(response) {
-    console.log(response)
+// // get json data from url with d3
+// d3.json(url).then(function(response) {
+//     console.log(response)
 
 
 
-  // array for markers
+//   // array for markers
 
-  // loop through json data to store coordinates for markers
+//   // loop through json data to store coordinates for markers
+// //   for (let i = 0; i < response.length; i++) {
+// // //     console.log(response[i].features.geometry.coordinates[0]);
+// // //     console.log(response[i].features.properties.mag);
+// // //   };
+// // // });
+
+
 //   for (let i = 0; i < response.length; i++) {
-// //     console.log(response[i].features.geometry.coordinates[0]);
-// //     console.log(response[i].features.properties.mag);
-// //   };
-// // });
-
-
-  for (let i = 0; i < response.length; i++) {
-    quakeMarkers.push(
-      L.circle(response[i].features.geometry.coordinates, {
-        stroke: false,
-        fillOpacity: 0.75,
-        color: "green",
-        fillColor: "green",
-        radius: (response[i].features.properties.mag)
-      })
-    );
-  };
-});
+//     quakeMarkers.push(
+//       L.circle(response[i].features.geometry.coordinates, {
+//         stroke: false,
+//         fillOpacity: 0.75,
+//         color: "green",
+//         fillColor: "green",
+//         radius: (response[i].features.properties.mag)
+//       })
+//     );
+//   };
+// });
 
 
