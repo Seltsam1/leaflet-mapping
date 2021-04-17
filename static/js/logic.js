@@ -78,7 +78,7 @@ d3.json(url).then(function(response) {
         stroke: true,
         weight: 0.5
       }
-    }
+    } // function to change circle color based on depth value
     function getColor(depth) {
       if(depth > 90) {
         return "#ea2c2c";
@@ -87,7 +87,7 @@ d3.json(url).then(function(response) {
       } else if(depth > 50) {
         return "#ee9c00"
       } else if(depth > 30) {
-        return "eecc00"
+        return "#eecc00"
       } else if(depth > 10) {
         return "#d4ee00"
       } else {
@@ -116,6 +116,31 @@ d3.json(url).then(function(response) {
 
   // add quakeLayer to map
   quakeLayer.addTo(myMap)
+
+  // legend steps
+  let legend = L.control({position: "bottomright"});
+
+  legend.onAdd = function() {
+    let div = L.DomUtil.create("div", "info legend");
+    let values = [-10, 10, 30, 50, 70, 90];
+    let colors = [
+      "#98ee00",
+      "#d4ee00",
+      "#eecc00",
+      "#ee9c00",
+      "#ea822c",
+      "#ea2c2c"
+    ];
+    // loop through intervals and create label for legend
+    for (var i = 0; i < values.length; i++) {
+      div.innerHTML +=
+      `<i style='background:${colors[i]}'></i>`
+      + values[i] + (values[i + 1] ? "&dash;" + values[i + 1] + "<br>" : "+");
+    }
+    return div;
+  };
+  // add legend to map
+  legend.addTo(myMap)
 
 
 });
